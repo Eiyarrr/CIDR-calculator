@@ -25,7 +25,13 @@ def get_usable_hosts(prefix):
     # could skip check for `== 32` and return abs()
     if prefix == 32:
         return 1
+
     return 2 ** (32 - prefix) - 2
+
+
+def get_block_size(prefix):
+    bits_remaining = prefix % 8
+    return 256 / 2**bits_remaining
 
 
 def main():
@@ -34,9 +40,12 @@ def main():
     total_ips = 2 ** (32 - prefix)
     usable_hosts = get_usable_hosts(prefix)
     subnet_mask = get_subnet_mask(prefix)
+    block_size = get_block_size(prefix)
 
     print(total_ips)
     print(subnet_mask)
+    print(usable_hosts)
+    print(block_size)
 
 
 if __name__ == "__main__":
