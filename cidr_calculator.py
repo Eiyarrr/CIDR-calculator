@@ -6,6 +6,7 @@ def get_cidr():
 
 def main():
     ip_addr, prefix = get_cidr()
+    total_ips = 2 ** (32 - prefix)
 
 
 if __name__ == "__main__":
