@@ -21,11 +21,22 @@ def get_subnet_mask(prefix):
     return subnet_mask
 
 
+def get_usable_hosts(prefix):
+    # could skip check for `== 32` and return abs()
+    if prefix == 32:
+        return 1
+    return 2 ** (32 - prefix) - 2
+
+
 def main():
     ip_addr, prefix = get_cidr()
 
     total_ips = 2 ** (32 - prefix)
+    usable_hosts = get_usable_hosts(prefix)
     subnet_mask = get_subnet_mask(prefix)
+
+    print(total_ips)
+    print(subnet_mask)
 
 
 if __name__ == "__main__":
