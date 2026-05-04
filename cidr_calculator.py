@@ -31,7 +31,8 @@ def get_usable_hosts(prefix):
 
 def get_block_size(prefix):
     bits_remaining = prefix % 8
-    return 256 / 2**bits_remaining
+    block_size = 256 / 2**bits_remaining
+    return int(block_size)
 
 
 def main():
@@ -42,10 +43,10 @@ def main():
     subnet_mask = get_subnet_mask(prefix)
     block_size = get_block_size(prefix)
 
-    print(total_ips)
-    print(subnet_mask)
-    print(usable_hosts)
-    print(block_size)
+    print("Total IPs:       " + str(total_ips))
+    print("Subnet mask:     " + str(subnet_mask))
+    print("Usable hosts:    " + str(usable_hosts))
+    print("Block size:      " + str(block_size))
 
 
 if __name__ == "__main__":
