@@ -35,19 +35,21 @@ def get_block_size(prefix):
     return int(block_size)
 
 
-def get_network_addr(ip_addr, subnet_mask):
+def get_network_addr(ip_addr, subnet_mask, prefix):
+    if prefix >= 31:
+        return None
     split_addr = ip_addr.split(".")
     split_mask = subnet_mask.split(".")
 
     # create IP in binary from string
     ip = 0
     for i in range(4):
-        ip |= int(split_addr[i] << (24 - i * 8))
+        ip |= int(split_addr[i]) << (24 - i * 8)
 
     # create mask in binary from string
     mask = 0
     for i in range(4):
-        mask |= int(split_mask[i] << (24 - i * 8))
+        mask |= int(split_mask[i]) << (24 - i * 8)
 
     network = ip & mask
 
@@ -63,7 +65,7 @@ def main():
     usable_hosts = get_usable_hosts(prefix)
     subnet_mask = get_subnet_mask(prefix)
     block_size = get_block_size(prefix)
-    network_addr = get_network_addr(ip_addr, subnet_mask)
+    network_addr = get_network_addr(ip_addr, subnet_mask, prefix)
 
     print("Total IPs:       " + str(total_ips))
     print("Subnet mask:     " + str(subnet_mask))
