@@ -51,11 +51,11 @@ def get_network_addr(ip_addr, subnet_mask, prefix):
     network = ip & mask
 
     # reconstruct network_addr as string from binary
-    network_addr = ""
+    octets = []
     for i in range(4):
-        network_addr += str(network >> (24 - i * 8) & 255)
-        if i != 3:
-            network_addr += "."
+        octets.append(str(network >> (24 - i * 8) & 255))
+    network_addr = ".".join(octets)
+
     return network_addr
 
 
