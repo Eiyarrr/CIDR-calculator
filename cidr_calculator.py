@@ -41,14 +41,11 @@ def get_network_addr(ip_addr, subnet_mask, prefix):
     split_addr = ip_addr.split(".")
     split_mask = subnet_mask.split(".")
 
-    # create IP in binary from string
+    # create IP and mask in binary from string
+    mask = 0
     ip = 0
     for i in range(4):
         ip |= int(split_addr[i]) << (24 - i * 8)
-
-    # create mask in binary from string
-    mask = 0
-    for i in range(4):
         mask |= int(split_mask[i]) << (24 - i * 8)
 
     network = ip & mask
