@@ -36,15 +36,22 @@ def get_block_size(prefix):
 
 
 def get_network_addr(ip_addr, subnet_mask):
-    # create IP in binary from string
     split_addr = ip_addr.split(".")
     split_mask = subnet_mask.split(".")
 
-    ip = int(split_addr[0]) << 24 | int(split_addr[1]) << 16 | int(split_addr[2]) << 8 | int(split_addr[3])
-    mask = int(split_mask[0]) << 24 | int(split_mask[1]) << 16 | int(split_mask[2]) << 8 | int(split_mask[3])
+    # create IP in binary from string
+    ip = 0
+    for i in range(4):
+        ip |= int(split_addr[i] << (24 - i * 8))
+
+    # create mask in binary from string
+    mask = 0
+    for i in range(4):
+        mask |= int(split_mask[i] << (24 - i * 8))
 
     network = ip & mask
 
+    # reconstruct network_addr as string from binary
     network_addr = f"{(network >> 24) & 255}.{(network >> 16) & 255}.{(network >> 8) & 255}.{network & 255}"
     return network_addr
 
