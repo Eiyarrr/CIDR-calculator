@@ -35,14 +35,17 @@ def get_block_size(prefix):
     return int(block_size)
 
 
-def get_network_addr(ip_addr, block_size):
-    split_ip = ip_addr.split(".")
-    # integer division followed by multiplication gives the first element of the block
-    last_octect = int(int(split_ip[3]) / block_size) * block_size
-    network_addr = ""
-    for i in range(3):
-        network_addr += split_ip[i] + "."
-    network_addr += str(last_octect)
+def get_network_addr(ip_addr, subnet_mask):
+    # create IP in binary from string
+    split_addr = ip_addr.split(".")
+    split_mask = subnet_mask.split(".")
+
+    ip = int(split_addr[0]) << 24 | int(split_addr[1]) << 16 | int(split_addr[2]) << 8 | int(split_addr[3])
+    mask = int(split_mask[0]) << 24 | int(split_mask[1]) << 16 | int(split_mask[2]) << 8 | int(split_mask[3])
+
+    network = ip & mask
+
+    network_addr = f"{(network >> 24) & 255}.{(network >> 16) & 255}.{(network >> 8) & 255}.{network & 255}"
     return network_addr
 
 
@@ -53,13 +56,13 @@ def main():
     usable_hosts = get_usable_hosts(prefix)
     subnet_mask = get_subnet_mask(prefix)
     block_size = get_block_size(prefix)
-    network_addr = get_network_addr(ip_addr, block_size)
+    network_addr = get_network_addr(ip_addr, subnet_mask)
 
     print("Total IPs:       " + str(total_ips))
     print("Subnet mask:     " + str(subnet_mask))
     print("Usable hosts:    " + str(usable_hosts))
     print("Block size:      " + str(block_size))
-    print("Network Addr:    " + str(network_addr))
+    print("Network addr:    " + str(network_addr))
 
 
 if __name__ == "__main__":
