@@ -7,15 +7,15 @@ def get_cidr():
 def get_subnet_mask(prefix):
     subnet_mask = ""
     bits_remaining = prefix % 8
-    full_octects = int(prefix / 8)
+    full_octets = int(prefix / 8)
 
-    for _ in range(full_octects):
+    for _ in range(full_octets):
         subnet_mask += "255."
 
     inverse_remaining = 8 - bits_remaining
     subnet_mask += str(256 - 2**inverse_remaining)
 
-    for _ in range(3 - full_octects):
+    for _ in range(3 - full_octets):
         subnet_mask += ".0"
 
     return subnet_mask
