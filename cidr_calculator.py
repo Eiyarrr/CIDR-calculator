@@ -45,15 +45,15 @@ def get_network_addr(ip_addr, subnet_mask, prefix):
     mask = 0
     ip = 0
     for i in range(4):
-        ip |= int(split_addr[i]) << (24 - i * 8)
-        mask |= int(split_mask[i]) << (24 - i * 8)
+        ip |= int(split_addr[i]) << (24 - 8 * i)
+        mask |= int(split_mask[i]) << (24 - 8 * i)
 
     network = ip & mask
 
     # reconstruct network_addr as string from binary
     octets = []
     for i in range(4):
-        octets.append(str(network >> (24 - i * 8) & 255))
+        octets.append(str(network >> (24 - 8 * i) & 255))
     network_addr = ".".join(octets)
 
     return network_addr
