@@ -54,7 +54,11 @@ def get_network_addr(ip_addr, subnet_mask, prefix):
     network = ip & mask
 
     # reconstruct network_addr as string from binary
-    network_addr = f"{(network >> 24) & 255}.{(network >> 16) & 255}.{(network >> 8) & 255}.{network & 255}"
+    network_addr = ""
+    for i in range(4):
+        network_addr += str(network >> (24 - i * 8) & 255)
+        if i != 3:
+            network_addr += "."
     return network_addr
 
 
