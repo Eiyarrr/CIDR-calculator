@@ -94,12 +94,16 @@ def main():
     network_addr = get_network_addr(ip_addr, subnet_mask, prefix)
     broadcast_addr = get_broadcast_addr(network_addr, prefix)
 
-    print("Total IPs:       " + str(total_ips))
-    print("Subnet mask:     " + str(subnet_mask))
-    print("Usable hosts:    " + str(usable_hosts))
-    print("Block size:      " + str(block_size))
-    print("Network addr:    " + str(network_addr))
-    print("Broadcast addr:  " + str(broadcast_addr))
+    print()
+    print("CIDR Calculator Results")
+    print("-" * 30)
+    print("CIDR             " + str(ip_addr) + "/" + str(prefix))
+    print("Subnet mask      " + str(subnet_mask))
+    print("Total IPs        " + str(total_ips))
+    print("Usable hosts     " + str(usable_hosts))
+    print("Block size       " + str(block_size))
+    print("Network addr     " + str(network_addr))
+    print("Broadcast addr   " + str(broadcast_addr))
 
 
 if __name__ == "__main__":
