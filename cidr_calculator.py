@@ -38,6 +38,7 @@ def get_block_size(prefix):
 def get_network_addr(ip_addr, subnet_mask, prefix):
     if prefix >= 31:
         return None
+
     split_addr = ip_addr.split(".")
     split_mask = subnet_mask.split(".")
 
@@ -59,6 +60,30 @@ def get_network_addr(ip_addr, subnet_mask, prefix):
     return network_addr
 
 
+def get_broadcast_addr(network_addr, prefix):
+    if prefix >= 31:
+        return None
+
+    split_net = network_addr.split(".")
+
+    # create network addr in binary from string
+    network = 0
+    for i in range(4):
+        network |= int(split_net[i]) << (24 - 8 * i)
+
+    # -1 because total_ips includes the broadcast addr itself
+    total_ips = 2 ** (32 - prefix)
+    broadcast = network | (total_ips - 1)
+
+    # reconstruct broadcast_addr as string from binary
+    octets = []
+    for i in range(4):
+        octets.append(str(broadcast >> (24 - 8 * i) & 255))
+    broadcast_addr = ".".join(octets)
+
+    return broadcast_addr
+
+
 def main():
     ip_addr, prefix = get_cidr()
 
@@ -67,12 +92,14 @@ def main():
     subnet_mask = get_subnet_mask(prefix)
     block_size = get_block_size(prefix)
     network_addr = get_network_addr(ip_addr, subnet_mask, prefix)
+    broadcast_addr = get_broadcast_addr(network_addr, prefix)
 
     print("Total IPs:       " + str(total_ips))
     print("Subnet mask:     " + str(subnet_mask))
     print("Usable hosts:    " + str(usable_hosts))
     print("Block size:      " + str(block_size))
     print("Network addr:    " + str(network_addr))
+    print("Broadcast addr:  " + str(broadcast_addr))
 
 
 if __name__ == "__main__":
